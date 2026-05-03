@@ -439,6 +439,97 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   opacity:0; transition:opacity 0.3s; white-space:nowrap;
 }
 #submit-toast.show { opacity:1; }
+
+/* ── MODE SELECTOR ── */
+#mode-selector {
+  display:flex; gap:8px; margin:16px 0 8px; width:100%; max-width:320px;
+}
+.mode-btn {
+  flex:1; padding:10px 6px; border-radius:12px; border:2px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.04); cursor:pointer; text-align:center;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+}
+.mode-btn.selected {
+  border-color:#FFD600; background:rgba(255,214,0,0.12);
+}
+.mode-btn-icon { font-size:22px; display:block; margin-bottom:4px; }
+.mode-btn-label {
+  font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px;
+  color:rgba(255,255,255,0.5); display:block;
+}
+.mode-btn.selected .mode-btn-label { color:#FFD600; }
+
+/* ── SURVIE MODE ── */
+#survival-timer {
+  position:absolute; top:62px; left:50%; transform:translateX(-50%);
+  font-family:'Bebas Neue',sans-serif; font-size:28px; color:#FFD600;
+  letter-spacing:4px; z-index:11; display:none; text-shadow:0 0 16px rgba(255,214,0,0.6);
+}
+#survival-timer.active { display:block; }
+#survival-timer.danger { color:#FF3355; text-shadow:0 0 16px rgba(255,51,85,0.8); animation:timerPulse 0.5s ease-in-out infinite; }
+@keyframes timerPulse { 0%,100%{transform:translateX(-50%) scale(1)} 50%{transform:translateX(-50%) scale(1.1)} }
+
+/* ── UNLOCK ANIMATION ── */
+#unlock-screen {
+  position:absolute; inset:0; z-index:300;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0); pointer-events:none; opacity:0;
+  text-align:center; padding:24px;
+}
+#unlock-screen.show {
+  pointer-events:all;
+  animation:unlockIn 4.5s ease forwards;
+}
+@keyframes unlockIn {
+  0%{opacity:0;background:rgba(0,0,0,0)}
+  10%{opacity:1;background:rgba(0,0,0,0.95)}
+  80%{opacity:1;background:rgba(0,0,0,0.95)}
+  100%{opacity:0;background:rgba(0,0,0,0)}
+}
+#unlock-badge {
+  font-size:72px; margin-bottom:16px;
+  animation:unlockBadge 0.6s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes unlockBadge {
+  from{transform:scale(0) rotate(-20deg);opacity:0}
+  to{transform:scale(1) rotate(0deg);opacity:1}
+}
+#unlock-title {
+  font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:4px;
+  color:rgba(255,255,255,0.4); margin-bottom:8px;
+  animation:ltUp 0.5s 0.5s ease both;
+}
+#unlock-world {
+  font-family:'Bebas Neue',sans-serif; font-size:52px; letter-spacing:4px;
+  line-height:1.1; margin-bottom:12px;
+  animation:ltUp 0.5s 0.7s ease both;
+}
+#unlock-world.gold   { color:#FFD600; text-shadow:0 0 40px rgba(255,214,0,0.8); }
+#unlock-world.orange { color:#FF8C00; text-shadow:0 0 40px rgba(255,140,0,0.8); }
+#unlock-world.red    { color:#FF2200; text-shadow:0 0 40px rgba(255,34,0,0.9); }
+#unlock-world.amber  { color:#D4740A; text-shadow:0 0 40px rgba(212,116,10,0.8); }
+#unlock-world.inferno{ color:#FF2200; text-shadow:0 0 50px rgba(255,34,0,1); animation:infernoPulse 0.8s ease-in-out infinite; }
+#unlock-sub {
+  font-size:16px; color:rgba(255,255,255,0.5); letter-spacing:2px; line-height:1.6;
+  animation:ltUp 0.5s 0.9s ease both;
+}
+
+/* Particles */
+.unlock-particle {
+  position:absolute; width:8px; height:8px; border-radius:50%;
+  animation:particleFly 1s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes particleFly {
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}
+}
+
+/* ── SURVIE GAME OVER ── */
+#survival-result {
+  font-family:'Bebas Neue',sans-serif; font-size:18px;
+  color:rgba(255,255,255,0.4); letter-spacing:3px; margin:4px 0 8px;
+}
 </style>
 </head>
 <body>
@@ -470,6 +561,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   <div id="speed-lines"></div>
   <div id="glitch-overlay"></div>
   <div id="ingame-best"></div>
+  <div id="survival-timer">00:00</div>
   <div id="hack-msg">RUINES À L'HORIZON<br>LE MONDE S'EFFONDRE<br>TIENS BON...</div>
   <div id="bpm-pulse"></div>
   <div id="bpm-label">100 BPM</div>
@@ -515,6 +607,14 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   </div>
   <div id="kb-hint">PC : A &nbsp; S &nbsp; K &nbsp; L</div>
 
+  <!-- UNLOCK ANIMATION -->
+  <div id="unlock-screen">
+    <div id="unlock-badge">🔓</div>
+    <div id="unlock-title">NOUVEAU MONDE DÉBLOQUÉ</div>
+    <div id="unlock-world" class="gold">MONDE 2</div>
+    <div id="unlock-sub"></div>
+  </div>
+
   <div id="level-transition">
     <div id="lt-level"></div>
     <div id="lt-title" class="gold"></div>
@@ -524,8 +624,19 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   <div id="overlay">
     <div id="overlay-title">TRAP RUSH</div>
     <div id="overlay-sub">Appuie sur le beat 🔥</div>
+    <div id="mode-selector">
+      <div class="mode-btn selected" id="mode-classic" onclick="selectMode('classic')">
+        <span class="mode-btn-icon">🎮</span>
+        <span class="mode-btn-label">CLASSIQUE</span>
+      </div>
+      <div class="mode-btn" id="mode-survival" onclick="selectMode('survival')">
+        <span class="mode-btn-icon">⏱️</span>
+        <span class="mode-btn-label">SURVIE</span>
+      </div>
+    </div>
     <div id="overlay-bpm"></div>
     <div id="overlay-score"></div>
+    <div id="survival-result"></div>
     <div id="overlay-rank"></div>
     <div id="overlay-best"></div>
     <button id="start-btn">JOUER</button>
@@ -971,17 +1082,19 @@ function triggerWorldTransition(nextWorld){
   stopGlitchEffects();
   stopHackMsgs();
 
-  const d=TRANSITION_DATA[nextWorld];
-  ltLevel.textContent=d.level;
-  ltTitle.textContent=d.title;
-  ltTitle.className=d.titleClass;
-  ltSub.textContent=d.sub;
-  ltSub.className=d.subClass;
-
   sfxWorldTransition(nextWorld);
-  lt.classList.add('show');
   screenFlash.style.background='rgba(255,255,255,0.2)';
   setTimeout(()=>{screenFlash.style.background='rgba(0,0,0,0)';},120);
+
+  // Animation de déblocage d'abord, puis transition
+  showUnlockAnimation(nextWorld, () => {
+    const d=TRANSITION_DATA[nextWorld];
+    ltLevel.textContent=d.level;
+    ltTitle.textContent=d.title;
+    ltTitle.className=d.titleClass;
+    ltSub.textContent=d.sub;
+    ltSub.className=d.subClass;
+    lt.classList.add('show');
 
   setTimeout(()=>{
     lt.classList.remove('show');
@@ -1012,6 +1125,7 @@ function triggerWorldTransition(nextWorld){
     startGlitchEffects();
     if(currentWorld>=4) startHackMsgs();
   },4100);
+  }); // end showUnlockAnimation
 }
 
 // ── Move notes ───────────────────────────────────────────────
@@ -1260,6 +1374,108 @@ if(savedName) {
   overlayEl.classList.add('hidden');
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// MODE SELECTOR
+// ═══════════════════════════════════════════════════════════
+let gameMode = 'classic'; // 'classic' | 'survival'
+
+function selectMode(mode) {
+  gameMode = mode;
+  document.getElementById('mode-classic').classList.toggle('selected', mode === 'classic');
+  document.getElementById('mode-survival').classList.toggle('selected', mode === 'survival');
+  $('start-btn').textContent = mode === 'survival' ? 'MODE SURVIE ⏱️' : 'JOUER';
+}
+
+// ═══════════════════════════════════════════════════════════
+// MODE SURVIE
+// ═══════════════════════════════════════════════════════════
+let survivalStartTime = 0;
+let survivalTimer = null;
+let bestSurvivalTime = parseInt(localStorage.getItem('trap_rush_best_survival') || '0');
+const survivalTimerEl = document.getElementById('survival-timer');
+
+function startSurvivalTimer() {
+  survivalStartTime = Date.now();
+  survivalTimerEl.classList.add('active');
+  survivalTimerEl.classList.remove('danger');
+  updateSurvivalDisplay();
+  survivalTimer = setInterval(updateSurvivalDisplay, 100);
+}
+
+function updateSurvivalDisplay() {
+  const elapsed = Math.floor((Date.now() - survivalStartTime) / 1000);
+  const mins = Math.floor(elapsed / 60).toString().padStart(2,'0');
+  const secs = (elapsed % 60).toString().padStart(2,'0');
+  survivalTimerEl.textContent = mins + ':' + secs;
+}
+
+function stopSurvivalTimer() {
+  clearInterval(survivalTimer);
+  survivalTimerEl.classList.remove('active','danger');
+}
+
+function getSurvivalTime() {
+  return Math.floor((Date.now() - survivalStartTime) / 1000);
+}
+
+// ═══════════════════════════════════════════════════════════
+// UNLOCK ANIMATION
+// ═══════════════════════════════════════════════════════════
+const unlockScreen  = document.getElementById('unlock-screen');
+const unlockBadge   = document.getElementById('unlock-badge');
+const unlockTitle   = document.getElementById('unlock-title');
+const unlockWorld   = document.getElementById('unlock-world');
+const unlockSub     = document.getElementById('unlock-sub');
+
+const UNLOCK_DATA = {
+  2: { badge:'\u{1F7E0}', label:'MONDE 2 - DRILL', cls:'orange', sub:'Le beat change. Accroche-toi !', color:'#FF8C00' },
+  3: { badge:'\u{1F534}', label:'MONDE 3 - ENFER', cls:'red', sub:'Ca va vraiment chauffer... Bonne chance !', color:'#FF2200' },
+  4: { badge:'\u{1F30B}', label:'MONDE 4 - APOCALYPSE', cls:'amber', sub:'Le monde s effondre. Tiens bon !', color:'#D4740A' },
+  5: { badge:'\u{2620}\uFE0F', label:'MONDE 5 - FEU ET CENDRES', cls:'inferno', sub:'Le dernier niveau. Personne n en revient...', color:'#FF2200' },
+};
+
+function showUnlockAnimation(world, callback) {
+  const d = UNLOCK_DATA[world];
+  if(!d) { if(callback) callback(); return; }
+
+  unlockBadge.textContent = d.badge;
+  unlockTitle.textContent = 'NOUVEAU MONDE DÉBLOQUÉ !';
+  unlockWorld.textContent = d.label;
+  unlockWorld.className = d.cls;
+  unlockSub.textContent = d.sub;
+
+  // Particles
+  spawnParticles(d.color);
+
+  unlockScreen.classList.add('show');
+
+  setTimeout(() => {
+    unlockScreen.classList.remove('show');
+    if(callback) callback();
+  }, 4600);
+}
+
+function spawnParticles(color) {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  for(let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'unlock-particle';
+    p.style.background = color;
+    p.style.left = cx + 'px';
+    p.style.top = cy + 'px';
+    const angle = (i / 20) * Math.PI * 2;
+    const dist = 80 + Math.random() * 120;
+    p.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    p.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    p.style.animationDelay = (Math.random() * 0.3) + 's';
+    p.style.animationDuration = (0.6 + Math.random() * 0.6) + 's';
+    wrap.appendChild(p);
+    setTimeout(() => p.remove(), 1200);
+  }
+}
+
 // ═══════════════════════════════════════════════════════════
 // SPEED LINES
 // ═══════════════════════════════════════════════════════════
@@ -1428,7 +1644,19 @@ function retryFail(){
     wrap.className='w1';
     $('game-title').textContent='TRAP RUSH';
     btnEls[0].textContent='🎤';btnEls[1].textContent='💰';btnEls[2].textContent='🔊';btnEls[3].textContent='🔥';
-    scoreEl.textContent='0';comboEl.style.opacity='0';updateHP();
+    scoreEl.textContent='0';comboEl.style.opacity='0';
+  if(gameMode==='survival'){
+    lives=999; // vies infinies en survie
+    updateHP();
+    // Cacher les vies, montrer le timer
+    $('life-wrap').style.opacity='0';
+    startSurvivalTimer();
+    // BPM monte plus vite en survie
+  } else {
+    lives=5; updateHP();
+    $('life-wrap').style.opacity='1';
+    stopSurvivalTimer();
+  }
   playerDisplay.textContent = playerName ? '👤 ' + playerName : '';
   newRecord=false;
   ingameBest.textContent=bestScore>0?'BEST '+bestScore:'';
@@ -1461,7 +1689,19 @@ function startGame(){
   wrap.className='w1';
   $('game-title').textContent='TRAP RUSH';
   btnEls[0].textContent='🎤';btnEls[1].textContent='💰';btnEls[2].textContent='🔊';btnEls[3].textContent='🔥';
-  scoreEl.textContent='0';comboEl.style.opacity='0';updateHP();
+  scoreEl.textContent='0';comboEl.style.opacity='0';
+  if(gameMode==='survival'){
+    lives=999; // vies infinies en survie
+    updateHP();
+    // Cacher les vies, montrer le timer
+    $('life-wrap').style.opacity='0';
+    startSurvivalTimer();
+    // BPM monte plus vite en survie
+  } else {
+    lives=5; updateHP();
+    $('life-wrap').style.opacity='1';
+    stopSurvivalTimer();
+  }
   playerDisplay.textContent = playerName ? '👤 ' + playerName : '';
   newRecord=false;
   ingameBest.textContent=bestScore>0?'BEST '+bestScore:'';
@@ -1487,19 +1727,41 @@ function endGame(){
   notes.forEach(n=>{if(n.el.parentNode)n.el.parentNode.removeChild(n.el);});notes=[];
   sfxGameOver();
 
-  if(score>bestScore)bestScore=score;
-  if(playerName) { saveScore(playerName, score, currentWorld).then(()=>{ if(score>0) showToast('🏆 SCORE SAUVEGARDÉ !'); }); }
-  $('overlay-score').textContent=score;
+  stopSurvivalTimer();
+  $('life-wrap').style.opacity='1';
+
+  if(gameMode==='survival'){
+    const survTime = getSurvivalTime();
+    const mins=Math.floor(survTime/60).toString().padStart(2,'0');
+    const secs=(survTime%60).toString().padStart(2,'0');
+    const isNewBest = survTime > bestSurvivalTime;
+    if(isNewBest){ bestSurvivalTime=survTime; localStorage.setItem('trap_rush_best_survival',survTime); }
+    $('survival-result').textContent = '⏱️ TEMPS : ' + mins + ':' + secs + (isNewBest?' 🏆 RECORD !':'');
+    $('survival-result').style.display='block';
+    $('overlay-bpm').textContent='BEST SURVIE : ' + Math.floor(bestSurvivalTime/60).toString().padStart(2,'0')+':'+( bestSurvivalTime%60).toString().padStart(2,'0');
+  } else {
+    $('survival-result').style.display='none';
+    if(score>bestScore)bestScore=score;
+    if(playerName) { saveScore(playerName, score, currentWorld).then(()=>{ if(score>0) showToast('🏆 SCORE SAUVEGARDÉ !'); }); }
+    $('overlay-bpm').textContent='BPM : '+Math.round(currentBPM)+' • MONDE '+currentWorld+'/5';
+  }
+  $('overlay-score').textContent= gameMode==='survival' ? '' : score;
   const endRank=getCurrentRank(score);
-  overlayRank.textContent=endRank.label;
+  overlayRank.textContent= gameMode==='survival' ? '' : endRank.label;
   overlayRank.className=''; overlayRank.style.color=endRank.cls.includes('rookie')?'#aaa':endRank.cls.includes('chaud')?'#FF8C00':endRank.cls.includes('lacar')?'#FFD600':endRank.cls.includes('legende')?'#FF2200':'#fff';
-  $('overlay-best').textContent=bestScore>0?'BEST : '+bestScore:'';
-  if(newRecord) $('overlay-best').textContent='🏆 NOUVEAU RECORD : '+score;
-  $('overlay-bpm').textContent='BPM : '+Math.round(currentBPM)+' • MONDE '+currentWorld+'/5';
-  const titles={1:'GAME OVER',2:'PAS MAL !',3:'TROP FORT',4:'SURVIVANT 🌋',5:'LÉGENDE ☠️'};
-  const subs={1:'Reviens frère 💪',2:"T'es chaud ! Continue",3:"T'es un vrai lacar toi",4:"T'as survécu à l'apocalypse 🌋",5:'T\'ES UNE LÉGENDE ABSOLUE 🔥'};
-  $('overlay-title').textContent=titles[currentWorld]||'GAME OVER';
-  $('overlay-sub').textContent=subs[currentWorld]||'Reviens !';
+  if(gameMode!=='survival'){
+    $('overlay-best').textContent=bestScore>0?'BEST : '+bestScore:'';
+    if(newRecord) $('overlay-best').textContent='🏆 NOUVEAU RECORD : '+score;
+  } else { $('overlay-best').textContent=''; }
+  if(gameMode==='survival'){
+    $('overlay-title').textContent='SURVIE TERMINÉE';
+    $('overlay-sub').textContent='T\'as tenu combien de temps ?';
+  } else {
+    const titles={1:'GAME OVER',2:'PAS MAL !',3:'TROP FORT',4:'SURVIVANT 🌋',5:'LÉGENDE ☠️'};
+    const subs={1:'Reviens frère 💪',2:"T'es chaud ! Continue",3:"T'es un vrai lacar toi",4:"T'as survécu à l'apocalypse 🌋",5:'T\'ES UNE LÉGENDE ABSOLUE 🔥'};
+    $('overlay-title').textContent=titles[currentWorld]||'GAME OVER';
+    $('overlay-sub').textContent=subs[currentWorld]||'Reviens !';
+  }
   $('start-btn').textContent='REJOUER';
   overlayEl.classList.remove('hidden');
   setTimeout(()=>{if(!running)startMenuBeat();},500);
