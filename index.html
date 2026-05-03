@@ -54,12 +54,13 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 .w5 #glitch-overlay { opacity:1; background:radial-gradient(ellipse at 50% 100%, rgba(220,60,0,0.18) 0%, transparent 60%); }
 
 /* ── HEADER ── */
-#header { position:absolute; top:0; left:0; right:0; padding:14px 18px 10px; display:flex; align-items:center; justify-content:space-between; z-index:10; background:linear-gradient(to bottom,rgba(0,0,0,0.85),transparent); }
+#header { position:absolute; top:0; left:0; right:0; padding:8px 18px 6px; display:flex; align-items:center; justify-content:space-between; z-index:10; background:linear-gradient(to bottom,rgba(0,0,0,0.9),transparent); }
 #game-title {
   font-family:'Bebas Neue',sans-serif; font-size:30px; letter-spacing:4px;
   transition:color 1s, text-shadow 1s, font-family 1s;
 }
 .w1 #game-title { color:#FFD600; text-shadow:0 0 24px rgba(255,214,0,0.6); }
+#game-title { font-size:24px !important; }
 .w2 #game-title { color:#FF8C00; text-shadow:0 0 24px rgba(255,140,0,0.6); }
 .w3 #game-title { color:#FF2200; text-shadow:0 0 24px rgba(255,0,0,0.8); }
 .w4 #game-title { color:#D4740A; text-shadow:0 0 24px rgba(212,116,10,0.8); letter-spacing:4px; }
@@ -80,24 +81,25 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   transition:color 1s;
 }
 .w1 #score-val { color:#FFD600; }
+#score-val { font-size:26px !important; }
 .w2 #score-val { color:#FF8C00; }
 .w3 #score-val { color:#FF3333; }
 .w4 #score-val { color:#D4740A; }
 .w5 #score-val { color:#FF3300; }
 
-#bpm-pulse { position:absolute; top:10px; left:50%; transform:translateX(-50%); width:8px; height:8px; border-radius:50%; z-index:10; animation:bpmPulse 0.43s ease-in-out infinite; }
+#bpm-pulse { position:absolute; top:8px; left:50%; transform:translateX(-50%); width:8px; height:8px; border-radius:50%; z-index:10; animation:bpmPulse 0.43s ease-in-out infinite; }
 .w1 #bpm-pulse { background:#FFD600; box-shadow:0 0 12px #FFD600; }
 .w2 #bpm-pulse { background:#FF8C00; box-shadow:0 0 12px #FF8C00; }
 .w3 #bpm-pulse { background:#FF3355; box-shadow:0 0 12px #FF3355; }
 .w4 #bpm-pulse { background:#D4740A; box-shadow:0 0 16px #D4740A; }
 .w5 #bpm-pulse { background:#FF2200; box-shadow:0 0 20px #FF2200; }
 @keyframes bpmPulse { 0%,100%{transform:translateX(-50%) scale(1);opacity:1} 50%{transform:translateX(-50%) scale(2.5);opacity:0.2} }
-#bpm-label { position:absolute; top:22px; left:50%; transform:translateX(-50%); font-family:'Bebas Neue',sans-serif; font-size:13px; color:rgba(255,255,255,0.25); letter-spacing:2px; z-index:10; white-space:nowrap; }
+#bpm-label { position:absolute; top:18px; left:50%; transform:translateX(-50%); font-family:'Bebas Neue',sans-serif; font-size:13px; color:rgba(255,255,255,0.25); letter-spacing:2px; z-index:10; white-space:nowrap; }
 .w4 #bpm-label { color:rgba(212,116,10,0.6); }
 .w5 #bpm-label { color:rgba(255,60,0,0.6); }
 
 /* ── LIFE ── */
-#life-wrap { position:absolute; top:62px; left:18px; right:18px; z-index:10; display:flex; gap:5px; align-items:center; }
+#life-wrap { position:absolute; top:48px; left:18px; right:18px; z-index:10; display:flex; gap:5px; align-items:center; }
 #life-label { font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:2px; text-transform:uppercase; margin-right:4px; }
 .life-seg { flex:1; height:7px; border-radius:4px; background:#FF3355; box-shadow:0 0 8px rgba(255,51,85,0.7); transition:background 0.3s,box-shadow 0.3s; }
 .life-seg.dead { background:rgba(255,255,255,0.08); box-shadow:none; }
@@ -105,15 +107,15 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 .w5 .life-seg { background:#FF2200; box-shadow:0 0 12px rgba(255,34,0,0.9); animation:flickerLife 0.6s infinite; }
 @keyframes flickerLife { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-#combo-display { position:absolute; top:80px; right:18px; font-family:'Bebas Neue',sans-serif; font-size:22px; color:#FF3355; letter-spacing:2px; z-index:10; opacity:0; transition:opacity 0.2s; }
+#combo-display { position:absolute; top:64px; right:18px; font-family:'Bebas Neue',sans-serif; font-size:22px; color:#FF3355; letter-spacing:2px; z-index:10; opacity:0; transition:opacity 0.2s; }
 .w4 #combo-display { color:#D4740A; }
 .w5 #combo-display { color:#FF2200; }
 
-#difficulty-bar { position:absolute; top:106px; left:18px; right:18px; font-size:11px; color:rgba(255,255,255,0.18); letter-spacing:3px; text-transform:uppercase; text-align:center; z-index:10; transition:color 0.5s; }
+#difficulty-bar { position:absolute; top:65px; left:18px; right:18px; font-size:11px; color:rgba(255,255,255,0.18); letter-spacing:3px; text-transform:uppercase; text-align:center; z-index:10; transition:color 0.5s; }
 
 
 /* ── LANES ── */
-#lanes { position:absolute; top:130px; bottom:calc(110px + env(safe-area-inset-bottom)); left:0; right:0; display:flex; gap:3px; padding:0 10px; z-index:5; }
+#lanes { position:absolute; top:96px; bottom:calc(110px + env(safe-area-inset-bottom)); left:0; right:0; display:flex; gap:3px; padding:0 10px; z-index:5; }
 .lane { flex:1; position:relative; overflow:hidden; border-left:1px solid rgba(255,255,255,0.04); border-right:1px solid rgba(255,255,255,0.04); }
 .w3 .lane,.w4 .lane,.w5 .lane { border-color:rgba(255,0,0,0.06); }
 .w4 .lane { border-color:rgba(180,80,10,0.12); }
@@ -303,7 +305,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 /* ── BEST SCORE IN GAME ── */
 #ingame-best {
-  position:absolute; top:62px; right:18px;
+  position:absolute; top:50px; right:18px;
   font-size:10px; color:rgba(255,255,255,0.18);
   letter-spacing:1px; z-index:11; text-align:right;
   text-transform:uppercase;
@@ -461,7 +463,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 /* ── SURVIE MODE ── */
 #survival-timer {
-  position:absolute; top:62px; left:50%; transform:translateX(-50%);
+  position:absolute; top:48px; left:50%; transform:translateX(-50%);
   font-family:'Bebas Neue',sans-serif; font-size:28px; color:#FFD600;
   letter-spacing:4px; z-index:11; display:none; text-shadow:0 0 16px rgba(255,214,0,0.6);
 }
@@ -533,11 +535,11 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 /* ── COINS DISPLAY ── */
 #coins-display {
-  position:absolute; top:10px; left:18px;
-  font-family:'Bebas Neue',sans-serif; font-size:16px;
+  position:absolute; top:48px; left:18px;
+  font-family:'Bebas Neue',sans-serif; font-size:13px;
   color:#FFD600; letter-spacing:2px; z-index:11;
-  display:flex; align-items:center; gap:5px;
-  text-shadow:0 0 10px rgba(255,214,0,0.5);
+  display:flex; align-items:center; gap:4px;
+  text-shadow:0 0 8px rgba(255,214,0,0.5);
   transition:transform 0.2s;
 }
 #coins-display.earned { animation:coinsEarned 0.4s ease-out; }
@@ -612,7 +614,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 /* ── POWERUP ACTIF EN JEU ── */
 #powerup-bar {
-  position:absolute; top:130px; left:10px; right:10px;
+  position:absolute; top:82px; left:10px; right:10px;
   display:flex; gap:6px; z-index:11; justify-content:center;
 }
 .powerup-slot {
@@ -646,6 +648,39 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.2)}
   100%{opacity:0;transform:translateX(-50%) translateY(-60px) scale(1)}
 }
+
+/* ── MENU BTN IN GAME ── */
+#ingame-menu-btn {
+  position:absolute; top:14px; right:18px;
+  font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px;
+  color:rgba(255,255,255,0.35); background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12); border-radius:20px;
+  padding:4px 12px; cursor:pointer; z-index:12; transition:all 0.2s;
+  display:none;
+}
+#ingame-menu-btn.visible { display:block; }
+#ingame-menu-btn:active { background:rgba(255,255,255,0.12); }
+
+/* ── CONFIRM QUIT ── */
+#confirm-quit {
+  position:absolute; inset:0; background:rgba(0,0,0,0.88);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:300; text-align:center; padding:28px;
+}
+#confirm-quit.hidden { display:none; }
+#confirm-quit-title {
+  font-family:'Bebas Neue',sans-serif; font-size:36px; color:#fff;
+  letter-spacing:4px; margin-bottom:8px;
+}
+#confirm-quit-sub { font-size:13px; color:rgba(255,255,255,0.35); letter-spacing:2px; margin-bottom:32px; }
+#confirm-quit-btns { display:flex; gap:12px; }
+#quit-yes, #quit-no {
+  font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px;
+  padding:12px 28px; border-radius:30px; border:none; cursor:pointer; transition:transform 0.1s;
+}
+#quit-yes { background:#FF3355; color:#fff; }
+#quit-no  { background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); }
+#quit-yes:active, #quit-no:active { transform:scale(0.94); }
 </style>
 </head>
 <body>
@@ -713,11 +748,13 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   <div id="speed-lines"></div>
   <div id="glitch-overlay"></div>
   <div id="ingame-best"></div>
+  <button id="ingame-menu-btn">☰ MENU</button>
+  <div id="confirm-quit" class="hidden"><div id="confirm-quit-title">QUITTER ?</div><div id="confirm-quit-sub">Ta partie en cours sera perdue</div><div id="confirm-quit-btns"><button id="quit-yes">QUITTER</button><button id="quit-no">CONTINUER</button></div></div>
   <div id="coins-display">💰 <span id="coins-val">0</span></div>
   <div id="powerup-bar"><div class="powerup-slot" id="slow-indicator">❄️ SLOW</div><div class="powerup-slot" id="shield-indicator">🛡️ SHIELD</div></div>
   <div id="coins-popup">+0 💰</div>
   <div id="survival-timer">00:00</div>
-  <div id="survival-miss-count" style="position:absolute;top:94px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);z-index:11;white-space:nowrap;display:none;">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
+  <div id="survival-miss-count" style="position:absolute;top:78px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);z-index:11;white-space:nowrap;display:none;">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
   <div id="hack-msg">RUINES À L'HORIZON<br>LE MONDE S'EFFONDRE<br>TIENS BON...</div>
   <div id="bpm-pulse"></div>
   <div id="bpm-label">100 BPM</div>
@@ -1740,15 +1777,21 @@ function earnCoins(amount) {
   if(amount <= 0) return;
   coins += amount;
   saveCoinsData();
-  coinsValEl.textContent = coins;
-  // Popup
-  coinsPopupEl.textContent = '+' + amount + ' 💰';
-  coinsPopupEl.classList.remove('show');
-  void coinsPopupEl.offsetWidth;
-  coinsPopupEl.classList.add('show');
-  // Animation coins display
-  document.getElementById('coins-display').classList.add('earned');
-  setTimeout(() => document.getElementById('coins-display').classList.remove('earned'), 400);
+  // Null-safe — coinsValEl peut ne pas encore être init
+  const cv = document.getElementById('coins-val');
+  if(cv) cv.textContent = coins;
+  const cp = document.getElementById('coins-popup');
+  if(cp) {
+    cp.textContent = '+' + amount + ' 💰';
+    cp.classList.remove('show');
+    void cp.offsetWidth;
+    cp.classList.add('show');
+  }
+  const cd = document.getElementById('coins-display');
+  if(cd) {
+    cd.classList.add('earned');
+    setTimeout(() => cd.classList.remove('earned'), 400);
+  }
 }
 
 // ── SHOW/HIDE BOUTIQUE ──
@@ -1803,6 +1846,42 @@ function activateShield() {
 // Modifier noteVelocity pour prendre en compte le slow
 const _origNoteVelocity = noteVelocity;
 // Override sera fait dans gameLoop
+
+
+// ── INGAME MENU BUTTON ──
+const ingameMenuBtn = document.getElementById('ingame-menu-btn');
+const confirmQuit   = document.getElementById('confirm-quit');
+
+document.getElementById('quit-yes').addEventListener('click', () => {
+  confirmQuit.classList.add('hidden');
+  ingameMenuBtn.classList.remove('visible');
+  running=false; stopBeat(); stopGlitchEffects(); stopHackMsgs();
+  cancelAnimationFrame(loopFrame);
+  notes.forEach(n=>{if(n.el.parentNode)n.el.parentNode.removeChild(n.el);}); notes=[];
+  stopSurvivalTimer();
+  slowActive=false; shieldActive=false;
+  wrap.className='w1';
+  $('game-title').textContent='TRAP RUSH';
+  btnEls[0].textContent='🎤';btnEls[1].textContent='💰';btnEls[2].textContent='🔊';btnEls[3].textContent='🔥';
+  $('life-wrap').style.opacity='1';
+  overlayEl.classList.remove('hidden');
+  $('overlay-title').textContent='TRAP RUSH';
+  $('overlay-sub').textContent='Appuie sur le beat 🔥';
+  $('overlay-score').textContent='';
+  $('overlay-bpm').textContent='';
+  $('overlay-best').textContent='';
+  $('start-btn').textContent='JOUER';
+  startMenuBeat();
+});
+document.getElementById('quit-no').addEventListener('click', () => {
+  confirmQuit.classList.add('hidden');
+});
+function toggleIngameMenu() {
+  if(!running) return;
+  confirmQuit.classList.toggle('hidden');
+}
+ingameMenuBtn.addEventListener('click', toggleIngameMenu);
+ingameMenuBtn.addEventListener('touchstart', e => { e.preventDefault(); toggleIngameMenu(); }, {passive:false});
 
 // ═══════════════════════════════════════════════════════════
 // SPEED LINES
@@ -2051,6 +2130,7 @@ function startGame(){
 
   startBeat();
   stopGlitchEffects();stopHackMsgs();
+  ingameMenuBtn.classList.add('visible');
   loopFrame=requestAnimationFrame(gameLoop);
 }
 
@@ -2110,6 +2190,7 @@ function endGame(){
     $('overlay-title').textContent=titles[currentWorld]||'GAME OVER';
     $('overlay-sub').textContent=subs[currentWorld]||'Reviens !';
   }
+  ingameMenuBtn.classList.remove('visible');
   $('start-btn').textContent='REJOUER';
   overlayEl.classList.remove('hidden');
   setTimeout(()=>{if(!running)startMenuBeat();},500);
