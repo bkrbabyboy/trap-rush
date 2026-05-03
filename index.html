@@ -1143,18 +1143,21 @@ function moveNotes(ts){
   for(const n of toRemove){
     removeNote(n);
     if(worldTransitioning)continue;
+
+    if(gameMode==='survival'){
+      survivalMisses++;
+      combo=1; comboEl.style.opacity='0';
+      showFeedback('miss'); sfxMiss();
+      updateSurvivalMissDisplay();
+      if(survivalMisses>=10){ endGame(); return; }
+      continue;
+    }
+
     lives--;combo=1;comboEl.style.opacity='0';updateHP();showFeedback('miss');sfxMiss();
     if(lives<=0){
       if(currentWorld===1){ endGame(); return; }
-      // Perd une chance sur ce monde
       worldLives--;
-      if(worldLives<=0){
-        // Plus de chances → retour monde 1
-        retryFail();
-      } else {
-        // Réessaye le même monde
-        retryWorld();
-      }
+      if(worldLives<=0){ retryFail(); } else { retryWorld(); }
       return;
     }
   }
