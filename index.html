@@ -562,6 +562,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   <div id="glitch-overlay"></div>
   <div id="ingame-best"></div>
   <div id="survival-timer">00:00</div>
+  <div id="survival-miss-count" style="position:absolute;top:94px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);z-index:11;white-space:nowrap;display:none;">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
   <div id="hack-msg">RUINES À L'HORIZON<br>LE MONDE S'EFFONDRE<br>TIENS BON...</div>
   <div id="bpm-pulse"></div>
   <div id="bpm-label">100 BPM</div>
@@ -1391,6 +1392,7 @@ function selectMode(mode) {
 // MODE SURVIE
 // ═══════════════════════════════════════════════════════════
 let survivalStartTime = 0;
+let survivalMisses = 0;
 let survivalTimer = null;
 let bestSurvivalTime = parseInt(localStorage.getItem('trap_rush_best_survival') || '0');
 const survivalTimerEl = document.getElementById('survival-timer');
@@ -1398,6 +1400,7 @@ const survivalTimerEl = document.getElementById('survival-timer');
 function startSurvivalTimer() {
   survivalStartTime = Date.now();
   survivalTimerEl.classList.add('active');
+  const mc=document.getElementById('survival-miss-count');if(mc)mc.style.display='block';
   survivalTimerEl.classList.remove('danger');
   updateSurvivalDisplay();
   survivalTimer = setInterval(updateSurvivalDisplay, 100);
@@ -1413,6 +1416,26 @@ function updateSurvivalDisplay() {
 function stopSurvivalTimer() {
   clearInterval(survivalTimer);
   survivalTimerEl.classList.remove('active','danger');
+  const mc2=document.getElementById('survival-miss-count');if(mc2)mc2.style.display='none';
+}
+
+function updateSurvivalMissDisplay() {
+  const remaining = 10 - survivalMisses;
+  survivalTimerEl.textContent = document.getElementById('survival-miss-bar') ?
+    survivalTimerEl.textContent : survivalTimerEl.textContent;
+  // Flash rouge sur miss
+  survivalTimerEl.classList.add('danger');
+  setTimeout(() => {
+    if(survivalMisses < 7) survivalTimerEl.classList.remove('danger');
+  }, 400);
+  // Mettre à jour compteur miss
+  const missEl = document.getElementById('survival-miss-count');
+  if(missEl) {
+    missEl.textContent = '❌'.repeat(survivalMisses) + '⬜'.repeat(10 - survivalMisses);
+    if(survivalMisses >= 7) missEl.style.color = '#FF3355';
+    else if(survivalMisses >= 4) missEl.style.color = '#FF8C00';
+    else missEl.style.color = 'rgba(255,255,255,0.4)';
+  }
 }
 
 function getSurvivalTime() {
@@ -1647,10 +1670,13 @@ function retryFail(){
     scoreEl.textContent='0';comboEl.style.opacity='0';
   if(gameMode==='survival'){
     lives=999; // vies infinies en survie
+    survivalMisses=0;
     updateHP();
     // Cacher les vies, montrer le timer
     $('life-wrap').style.opacity='0';
     startSurvivalTimer();
+    const missEl=document.getElementById('survival-miss-count');
+    if(missEl){missEl.textContent='⬜'.repeat(10);missEl.style.color='rgba(255,255,255,0.4)';}
     // BPM monte plus vite en survie
   } else {
     lives=5; updateHP();
@@ -1692,10 +1718,13 @@ function startGame(){
   scoreEl.textContent='0';comboEl.style.opacity='0';
   if(gameMode==='survival'){
     lives=999; // vies infinies en survie
+    survivalMisses=0;
     updateHP();
     // Cacher les vies, montrer le timer
     $('life-wrap').style.opacity='0';
     startSurvivalTimer();
+    const missEl=document.getElementById('survival-miss-count');
+    if(missEl){missEl.textContent='⬜'.repeat(10);missEl.style.color='rgba(255,255,255,0.4)';}
     // BPM monte plus vite en survie
   } else {
     lives=5; updateHP();
@@ -1736,7 +1765,7 @@ function endGame(){
     const secs=(survTime%60).toString().padStart(2,'0');
     const isNewBest = survTime > bestSurvivalTime;
     if(isNewBest){ bestSurvivalTime=survTime; localStorage.setItem('trap_rush_best_survival',survTime); }
-    $('survival-result').textContent = '⏱️ TEMPS : ' + mins + ':' + secs + (isNewBest?' 🏆 RECORD !':'');
+    $('survival-result').textContent = '⏱️ ' + mins + ':' + secs + ' — ' + survivalMisses + '/10 miss' + (isNewBest?' 🏆 RECORD !':'');
     $('survival-result').style.display='block';
     $('overlay-bpm').textContent='BEST SURVIE : ' + Math.floor(bestSurvivalTime/60).toString().padStart(2,'0')+':'+( bestSurvivalTime%60).toString().padStart(2,'0');
   } else {
