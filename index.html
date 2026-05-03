@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TRAP RUSH">
@@ -113,7 +113,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 
 /* ── LANES ── */
-#lanes { position:absolute; top:130px; bottom:110px; left:0; right:0; display:flex; gap:3px; padding:0 10px; z-index:5; }
+#lanes { position:absolute; top:130px; bottom:calc(110px + env(safe-area-inset-bottom)); left:0; right:0; display:flex; gap:3px; padding:0 10px; z-index:5; }
 .lane { flex:1; position:relative; overflow:hidden; border-left:1px solid rgba(255,255,255,0.04); border-right:1px solid rgba(255,255,255,0.04); }
 .w3 .lane,.w4 .lane,.w5 .lane { border-color:rgba(255,0,0,0.06); }
 .w4 .lane { border-color:rgba(180,80,10,0.12); }
@@ -150,17 +150,17 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 .w5 .note-3 { background:linear-gradient(135deg,#881100,#000000); box-shadow:0 0 22px rgba(136,17,0,0.9); }
 
 /* ── HIT ZONE ── */
-#hit-zone { position:absolute; bottom:110px; left:10px; right:10px; height:3px; z-index:8; transition:background 1s,box-shadow 1s; }
+#hit-zone { position:absolute; bottom:calc(110px + env(safe-area-inset-bottom)); left:10px; right:10px; height:3px; z-index:8; transition:background 1s,box-shadow 1s; }
 .w1 #hit-zone { background:rgba(255,214,0,0.55); box-shadow:0 0 16px rgba(255,214,0,0.5); }
 .w2 #hit-zone { background:rgba(255,140,0,0.55); box-shadow:0 0 16px rgba(255,140,0,0.5); }
 .w3 #hit-zone { background:rgba(255,0,0,0.7); box-shadow:0 0 20px rgba(255,0,0,0.8); }
 .w4 #hit-zone { background:rgba(212,116,10,0.7); box-shadow:0 0 20px rgba(212,116,10,0.9); }
 .w5 #hit-zone { background:rgba(255,34,0,0.9); box-shadow:0 0 30px rgba(255,34,0,1),0 0 60px rgba(200,20,0,0.5); animation:hitFlicker 0.8s infinite; }
 @keyframes hitFlicker { 0%,100%{opacity:1} 50%{opacity:0.5} }
-#beat-line { position:absolute; bottom:110px; left:10px; right:10px; height:3px; background:rgba(0,0,0,0); z-index:9; border-radius:2px; }
+#beat-line { position:absolute; bottom:calc(110px + env(safe-area-inset-bottom)); left:10px; right:10px; height:3px; background:rgba(0,0,0,0); z-index:9; border-radius:2px; }
 
 /* ── BUTTONS ── */
-#buttons { position:absolute; bottom:16px; left:0; right:0; display:flex; gap:5px; padding:0 10px; z-index:10; }
+#buttons { position:absolute; bottom:calc(16px + env(safe-area-inset-bottom)); left:0; right:0; display:flex; gap:5px; padding:0 10px; z-index:10; }
 .btn { flex:1; height:84px; border-radius:14px; border:2px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:30px; transition:transform 0.08s,filter 0.08s,background 1s,border-color 1s; -webkit-tap-highlight-color:transparent; position:relative; overflow:hidden; }
 .btn:active,.btn.pressed { transform:scale(0.90); filter:brightness(1.5); }
 .w1 .btn-0 { background:rgba(255,0,68,0.18); border-color:rgba(255,0,68,0.7); }
@@ -190,7 +190,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 @keyframes feedbackAnim { 0%{transform:scale(1.5);opacity:1} 100%{transform:scale(1) translateY(-40px);opacity:0} }
 
 /* ── VISUALIZER ── */
-#visualizer { position:absolute; bottom:113px; left:10px; right:10px; height:36px; display:flex; align-items:flex-end; gap:2px; z-index:4; opacity:0.3; pointer-events:none; }
+#visualizer { position:absolute; bottom:calc(113px + env(safe-area-inset-bottom)); left:10px; right:10px; height:36px; display:flex; align-items:flex-end; gap:2px; z-index:4; opacity:0.3; pointer-events:none; }
 .vbar { flex:1; border-radius:2px 2px 0 0; height:4px; }
 
 #screen-flash { position:absolute; inset:0; background:rgba(0,0,0,0); pointer-events:none; z-index:49; }
@@ -207,7 +207,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 .w5 #hack-msg { color:rgba(200,40,0,0.18); animation:emberFlicker 1.5s ease-in-out infinite; }
 @keyframes emberFlicker { 0%,100%{opacity:0.6} 50%{opacity:1} }
 
-#kb-hint { position:absolute; bottom:96px; left:0; right:0; text-align:center; font-size:10px; color:rgba(255,255,255,0.1); letter-spacing:2px; z-index:10; }
+#kb-hint { position:absolute; bottom:calc(96px + env(safe-area-inset-bottom)); left:0; right:0; text-align:center; font-size:10px; color:rgba(255,255,255,0.1); letter-spacing:2px; z-index:10; }
 
 /* ── TRANSITION ── */
 #level-transition {
@@ -281,7 +281,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 /* ── PROGRESS BAR ── */
 #progress-wrap {
-  position:absolute; bottom:107px; left:10px; right:10px;
+  position:absolute; bottom:calc(107px + env(safe-area-inset-bottom)); left:10px; right:10px;
   height:4px; z-index:9; border-radius:2px;
   background:rgba(255,255,255,0.06);
   overflow:hidden;
@@ -296,7 +296,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 .w4 #progress-fill { background:#D4740A; }
 .w5 #progress-fill { background:#FF3300; }
 #progress-label {
-  position:absolute; bottom:112px; right:10px;
+  position:absolute; bottom:calc(112px + env(safe-area-inset-bottom)); right:10px;
   font-size:9px; color:rgba(255,255,255,0.2);
   letter-spacing:2px; z-index:9; text-transform:uppercase;
 }
@@ -416,7 +416,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
 
 /* ── PLAYER NAME IN GAME ── */
 #player-display {
-  position:absolute; bottom:107px; left:10px;
+  position:absolute; bottom:calc(107px + env(safe-area-inset-bottom)); left:10px;
   font-size:9px; color:rgba(255,255,255,0.18); letter-spacing:2px; z-index:11;
   text-transform:uppercase;
 }
