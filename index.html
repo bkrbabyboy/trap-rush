@@ -530,10 +530,162 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   font-family:'Bebas Neue',sans-serif; font-size:18px;
   color:rgba(255,255,255,0.4); letter-spacing:3px; margin:4px 0 8px;
 }
+
+/* ── COINS DISPLAY ── */
+#coins-display {
+  position:absolute; top:10px; left:18px;
+  font-family:'Bebas Neue',sans-serif; font-size:16px;
+  color:#FFD600; letter-spacing:2px; z-index:11;
+  display:flex; align-items:center; gap:5px;
+  text-shadow:0 0 10px rgba(255,214,0,0.5);
+  transition:transform 0.2s;
+}
+#coins-display.earned { animation:coinsEarned 0.4s ease-out; }
+@keyframes coinsEarned {
+  0%{transform:scale(1)} 50%{transform:scale(1.3)} 100%{transform:scale(1)}
+}
+
+/* ── BOUTIQUE BTN ── */
+#shop-btn {
+  position:absolute; top:8px; left:18px;
+  background:rgba(255,214,0,0.1); border:1px solid rgba(255,214,0,0.3);
+  color:#FFD600; font-family:'Bebas Neue',sans-serif;
+  font-size:13px; letter-spacing:2px; padding:5px 12px;
+  border-radius:20px; cursor:pointer; z-index:101;
+  display:none; transition:all 0.2s;
+}
+#shop-btn:active { transform:scale(0.95); }
+
+/* ── BOUTIQUE SCREEN ── */
+#shop-screen {
+  position:absolute; inset:0; background:rgba(0,0,0,0.95);
+  display:flex; flex-direction:column; align-items:center;
+  z-index:200; padding:20px 16px; overflow-y:auto;
+}
+#shop-screen.hidden { display:none; }
+#shop-title {
+  font-family:'Bebas Neue',sans-serif; font-size:48px; letter-spacing:5px;
+  color:#FFD600; text-shadow:0 0 20px rgba(255,214,0,0.6);
+  margin-bottom:4px; margin-top:8px;
+}
+#shop-coins-total {
+  font-family:'Bebas Neue',sans-serif; font-size:22px;
+  color:#FFD600; letter-spacing:3px; margin-bottom:20px;
+}
+#shop-items { width:100%; max-width:360px; }
+
+.shop-item {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px; padding:16px; margin-bottom:10px;
+  display:flex; align-items:center; gap:14px;
+}
+.shop-item.owned { border-color:rgba(255,214,0,0.4); background:rgba(255,214,0,0.06); }
+.shop-item.insufficient { opacity:0.5; }
+.shop-item-icon { font-size:36px; flex-shrink:0; }
+.shop-item-info { flex:1; }
+.shop-item-name {
+  font-family:'Bebas Neue',sans-serif; font-size:20px;
+  color:#fff; letter-spacing:2px; margin-bottom:2px;
+}
+.shop-item-desc { font-size:12px; color:rgba(255,255,255,0.4); letter-spacing:1px; line-height:1.4; }
+.shop-item-qty {
+  font-size:11px; color:#FFD600; letter-spacing:1px; margin-top:4px;
+}
+.shop-buy-btn {
+  font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px;
+  padding:8px 14px; border-radius:10px; border:none; cursor:pointer;
+  transition:transform 0.1s, filter 0.1s; flex-shrink:0; text-align:center;
+  min-width:80px;
+}
+.shop-buy-btn:active { transform:scale(0.92); }
+.shop-buy-btn.can-buy { background:#FFD600; color:#0a0a0a; }
+.shop-buy-btn.cant-buy { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.25); cursor:not-allowed; }
+.shop-buy-btn.owned-btn { background:rgba(0,255,80,0.15); color:#00FF80; border:1px solid rgba(0,255,80,0.3); cursor:default; }
+
+#shop-back-btn {
+  margin-top:16px; background:transparent; border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.4); font-family:'Bebas Neue',sans-serif;
+  font-size:16px; letter-spacing:3px; padding:12px 36px; border-radius:30px;
+  cursor:pointer; margin-bottom:20px; flex-shrink:0;
+}
+#shop-back-btn:active { transform:scale(0.95); }
+
+/* ── POWERUP ACTIF EN JEU ── */
+#powerup-bar {
+  position:absolute; top:130px; left:10px; right:10px;
+  display:flex; gap:6px; z-index:11; justify-content:center;
+}
+.powerup-slot {
+  font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:1px;
+  padding:4px 10px; border-radius:20px; display:none; align-items:center; gap:4px;
+  border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.5);
+  color:rgba(255,255,255,0.6);
+}
+.powerup-slot.active { display:flex; }
+#slow-indicator { border-color:rgba(0,229,255,0.5); color:#00E5FF; }
+#shield-indicator { border-color:rgba(0,255,80,0.5); color:#00FF80; }
+
+/* ── SHOP BTN DANS MENU ── */
+#menu-shop-btn {
+  margin-top:8px; background:rgba(255,214,0,0.1); border:1px solid rgba(255,214,0,0.3);
+  color:#FFD600; font-family:'Bebas Neue',sans-serif;
+  font-size:16px; letter-spacing:3px; padding:10px 32px; border-radius:30px;
+  cursor:pointer; transition:all 0.2s; display:block;
+}
+#menu-shop-btn:active { transform:scale(0.95); }
+
+/* ── COINS EARNED POPUP ── */
+#coins-popup {
+  position:absolute; top:45%; left:50%; transform:translateX(-50%);
+  font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:3px;
+  color:#FFD600; text-shadow:0 0 20px rgba(255,214,0,0.8);
+  pointer-events:none; z-index:40; opacity:0;
+}
+#coins-popup.show { animation:coinsPopup 1.5s ease-out forwards; }
+@keyframes coinsPopup {
+  0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.2)}
+  100%{opacity:0;transform:translateX(-50%) translateY(-60px) scale(1)}
+}
 </style>
 </head>
 <body>
 <div id="game-wrap" class="w1">
+
+  <!-- BOUTIQUE -->
+  <div id="shop-screen" class="hidden">
+    <div id="shop-title">💰 BOUTIQUE</div>
+    <div id="shop-coins-total">0 COINS</div>
+    <div id="shop-items">
+      <div class="shop-item" id="item-lives">
+        <div class="shop-item-icon">❤️</div>
+        <div class="shop-item-info">
+          <div class="shop-item-name">VIE BONUS</div>
+          <div class="shop-item-desc">+5 vies supplémentaires en mode survie.<br>Se cumule jusqu'à 3 fois.</div>
+          <div class="shop-item-qty" id="lives-qty">Stock : 0</div>
+        </div>
+        <button class="shop-buy-btn" id="buy-lives" onclick="buyItem('lives')">150 💰</button>
+      </div>
+      <div class="shop-item" id="item-slow">
+        <div class="shop-item-icon">❄️</div>
+        <div class="shop-item-info">
+          <div class="shop-item-name">SLOW MOTION</div>
+          <div class="shop-item-desc">Ralentit le jeu pendant 8 secondes.<br>Activé automatiquement quand tu perds 3 vies.</div>
+          <div class="shop-item-qty" id="slow-qty">Stock : 0</div>
+        </div>
+        <button class="shop-buy-btn" id="buy-slow" onclick="buyItem('slow')">200 💰</button>
+      </div>
+      <div class="shop-item" id="item-shield">
+        <div class="shop-item-icon">🛡️</div>
+        <div class="shop-item-info">
+          <div class="shop-item-name">BOUCLIER</div>
+          <div class="shop-item-desc">Annule automatiquement la prochaine note ratée.<br>S'active tout seul quand tu en as besoin.</div>
+          <div class="shop-item-qty" id="shield-qty">Stock : 0</div>
+        </div>
+        <button class="shop-buy-btn" id="buy-shield" onclick="buyItem('shield')">250 💰</button>
+      </div>
+    </div>
+    <button id="shop-back-btn">← RETOUR</button>
+  </div>
 
   <!-- INSCRIPTION -->
   <div id="register-screen">
@@ -561,6 +713,9 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
   <div id="speed-lines"></div>
   <div id="glitch-overlay"></div>
   <div id="ingame-best"></div>
+  <div id="coins-display">💰 <span id="coins-val">0</span></div>
+  <div id="powerup-bar"><div class="powerup-slot" id="slow-indicator">❄️ SLOW</div><div class="powerup-slot" id="shield-indicator">🛡️ SHIELD</div></div>
+  <div id="coins-popup">+0 💰</div>
   <div id="survival-timer">00:00</div>
   <div id="survival-miss-count" style="position:absolute;top:94px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);z-index:11;white-space:nowrap;display:none;">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
   <div id="hack-msg">RUINES À L'HORIZON<br>LE MONDE S'EFFONDRE<br>TIENS BON...</div>
@@ -643,6 +798,7 @@ html,body { width:100%; height:100%; background:#050505; font-family:'Barlow Con
     <button id="start-btn">JOUER</button>
     <div id="overlay-controls">🎤 MIC &nbsp;|&nbsp; 💰 CASH &nbsp;|&nbsp; 🔊 BASS &nbsp;|&nbsp; 🔥 FIRE<br>Tape le bouton quand la note arrive en bas</div>
     <div id="menu-viz"></div>
+    <button id="menu-shop-btn">💰 BOUTIQUE</button>
     <button id="menu-lb-btn">🏆 LEADERBOARD</button>
   </div>
 </div>
@@ -992,7 +1148,7 @@ const lt=$('level-transition'),ltLevel=$('lt-level'),ltTitle=$('lt-title'),ltSub
 
 function laneHeight(){return laneEls[0].getBoundingClientRect().height;}
 function hitZonePx(){const hz=$('hit-zone').getBoundingClientRect(),la=laneEls[0].getBoundingClientRect();return hz.top-la.top;}
-function noteVelocity(){return laneHeight()/(4*(60000/currentBPM));}
+function noteVelocity(){const base=laneHeight()/(4*(60000/currentBPM));return slowActive?base*0.45:base;}
 function getSpawnPat(){const p=SPAWN[currentWorld];return p[Math.min(diffSubLevel-1,p.length-1)];}
 
 function spawnNote(lane){
@@ -1144,6 +1300,14 @@ function moveNotes(ts){
     removeNote(n);
     if(worldTransitioning)continue;
 
+    // SHIELD intercepts miss
+    if(shieldActive) {
+      shieldActive = false;
+      document.getElementById('shield-indicator').classList.remove('active');
+      showFeedback('good');
+      continue;
+    }
+
     if(gameMode==='survival'){
       survivalMisses++;
       combo=1; comboEl.style.opacity='0';
@@ -1154,6 +1318,8 @@ function moveNotes(ts){
     }
 
     lives--;combo=1;comboEl.style.opacity='0';updateHP();showFeedback('miss');sfxMiss();
+    // Auto-activate slow at 3 lives lost
+    if(lives<=2 && inventory.slow>0 && !slowActive) activateSlow();
     if(lives<=0){
       if(currentWorld===1){ endGame(); return; }
       worldLives--;
@@ -1502,6 +1668,142 @@ function spawnParticles(color) {
   }
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// COINS & BOUTIQUE
+// ═══════════════════════════════════════════════════════════
+let coins = parseInt(localStorage.getItem('trap_rush_coins') || '0');
+let inventory = JSON.parse(localStorage.getItem('trap_rush_inventory') || '{"lives":0,"slow":0,"shield":0}');
+
+// Powerups actifs en jeu
+let slowActive = false, slowTimer = null;
+let shieldActive = false;
+
+// Ces éléments sont initialisés après le DOM
+let coinsValEl, coinsPopupEl, shopScreen;
+document.addEventListener('DOMContentLoaded', () => {
+  coinsValEl   = document.getElementById('coins-val');
+  coinsPopupEl = document.getElementById('coins-popup');
+  shopScreen   = document.getElementById('shop-screen');
+  updateCoinsDisplay();
+});
+
+function saveCoinsData() {
+  localStorage.setItem('trap_rush_coins', coins);
+  localStorage.setItem('trap_rush_inventory', JSON.stringify(inventory));
+}
+
+function updateCoinsDisplay() {
+  coinsValEl.textContent = coins;
+  document.getElementById('shop-coins-total').textContent = coins + ' COINS';
+  document.getElementById('lives-qty').textContent = 'Stock : ' + inventory.lives;
+  document.getElementById('slow-qty').textContent = 'Stock : ' + inventory.slow;
+  document.getElementById('shield-qty').textContent = 'Stock : ' + inventory.shield;
+
+  // Update buy buttons
+  const items = [
+    { id:'buy-lives', cost:150, key:'lives', max:3 },
+    { id:'buy-slow',  cost:200, key:'slow',  max:5 },
+    { id:'buy-shield',cost:250, key:'shield', max:5 },
+  ];
+  items.forEach(({id, cost, key, max}) => {
+    const btn = document.getElementById(id);
+    if(!btn) return;
+    if(inventory[key] >= max) {
+      btn.textContent = 'MAX';
+      btn.className = 'shop-buy-btn owned-btn';
+    } else if(coins >= cost) {
+      btn.textContent = cost + ' 💰';
+      btn.className = 'shop-buy-btn can-buy';
+    } else {
+      btn.textContent = cost + ' 💰';
+      btn.className = 'shop-buy-btn cant-buy';
+    }
+  });
+}
+
+function buyItem(key) {
+  const costs = { lives:150, slow:200, shield:250 };
+  const maxs  = { lives:3, slow:5, shield:5 };
+  const cost = costs[key];
+  if(coins < cost || inventory[key] >= maxs[key]) return;
+  coins -= cost;
+  inventory[key]++;
+  saveCoinsData();
+  updateCoinsDisplay();
+  // Flash confirmation
+  const btn = document.getElementById('buy-' + key);
+  if(btn) { btn.textContent = '✅ ACHETÉ !'; setTimeout(() => updateCoinsDisplay(), 800); }
+}
+
+function earnCoins(amount) {
+  if(amount <= 0) return;
+  coins += amount;
+  saveCoinsData();
+  coinsValEl.textContent = coins;
+  // Popup
+  coinsPopupEl.textContent = '+' + amount + ' 💰';
+  coinsPopupEl.classList.remove('show');
+  void coinsPopupEl.offsetWidth;
+  coinsPopupEl.classList.add('show');
+  // Animation coins display
+  document.getElementById('coins-display').classList.add('earned');
+  setTimeout(() => document.getElementById('coins-display').classList.remove('earned'), 400);
+}
+
+// ── SHOW/HIDE BOUTIQUE ──
+function showShop(fromMenu=false) {
+  stopMenuBeat();
+  updateCoinsDisplay();
+  shopScreen.classList.remove('hidden');
+  document.getElementById('shop-back-btn').onclick = () => {
+    shopScreen.classList.add('hidden');
+    if(fromMenu) {
+      overlayEl.classList.remove('hidden');
+      if(!running) startMenuBeat();
+    } else {
+      overlayEl.classList.remove('hidden');
+    }
+  };
+}
+
+document.getElementById('menu-shop-btn').addEventListener('click', () => {
+  overlayEl.classList.add('hidden');
+  showShop(true);
+});
+document.getElementById('menu-shop-btn').addEventListener('touchstart', e => {
+  e.preventDefault();
+  overlayEl.classList.add('hidden');
+  showShop(true);
+}, {passive:false});
+
+// ── POWERUPS EN JEU ──
+function activateSlow() {
+  if(!inventory.slow || slowActive) return;
+  inventory.slow--;
+  saveCoinsData();
+  slowActive = true;
+  document.getElementById('slow-indicator').classList.add('active');
+  // Réduire vitesse notes
+  clearTimeout(slowTimer);
+  slowTimer = setTimeout(() => {
+    slowActive = false;
+    document.getElementById('slow-indicator').classList.remove('active');
+  }, 8000);
+}
+
+function activateShield() {
+  if(!inventory.shield || shieldActive) return;
+  inventory.shield--;
+  saveCoinsData();
+  shieldActive = true;
+  document.getElementById('shield-indicator').classList.add('active');
+}
+
+// Modifier noteVelocity pour prendre en compte le slow
+const _origNoteVelocity = noteVelocity;
+// Override sera fait dans gameLoop
+
 // ═══════════════════════════════════════════════════════════
 // SPEED LINES
 // ═══════════════════════════════════════════════════════════
@@ -1761,6 +2063,20 @@ function endGame(){
 
   stopSurvivalTimer();
   $('life-wrap').style.opacity='1';
+  // Reset powerups
+  slowActive=false; shieldActive=false;
+  clearTimeout(slowTimer);
+  document.getElementById('slow-indicator').classList.remove('active');
+  document.getElementById('shield-indicator').classList.remove('active');
+  // Earn coins based on score
+  if(gameMode!=='survival'){
+    const earned = Math.floor(score / 500);
+    if(earned>0) earnCoins(earned);
+  } else {
+    const survTime = typeof survivalStartTime!=='undefined' ? Math.floor((Date.now()-survivalStartTime)/1000) : 0;
+    const earned = Math.floor(survTime / 5);
+    if(earned>0) earnCoins(earned);
+  }
 
   if(gameMode==='survival'){
     const survTime = getSurvivalTime();
