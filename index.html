@@ -1112,11 +1112,13 @@ const playerDisplay    = document.getElementById('player-display');
 // ── CONFIG JSONBIN ──
 const JSONBIN_ID  = "69f76fd4aaba88219768000d";
 const JSONBIN_KEY = "$2a$10$TlxW2IdJY3MwQqcSYQI5seOLfJASV1ntLLzEVLT1avroAqJSWe.Ae";
-const JSONBIN_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
+const JSONBIN_BASE = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
+const PROXY = "https://corsproxy.io/?";
+const JSONBIN_URL = PROXY + encodeURIComponent(JSONBIN_BASE);
 
 // ── Lire tous les scores ──
 async function fetchScores() {
-  const res = await fetch(JSONBIN_URL + "/latest", {
+  const res = await fetch(PROXY + encodeURIComponent(JSONBIN_BASE + "/latest"), {
     headers: { "X-Master-Key": JSONBIN_KEY }
   });
   const data = await res.json();
