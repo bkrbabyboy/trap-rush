@@ -1109,41 +1109,42 @@ const lbLoading        = document.getElementById('lb-loading');
 const submitToast      = document.getElementById('submit-toast');
 const playerDisplay    = document.getElementById('player-display');
 
-// ── CONFIG JSONBIN ──
-const JSONBIN_ID  = "69f76fd4aaba88219768000d";
-const JSONBIN_KEY = "$2a$10$TlxW2IdJY3MwQqcSYQI5seOLfJASV1ntLLzEVLT1avroAqJSWe.Ae";
-const JSONBIN_BASE = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
-const PROXY = "https://corsproxy.io/?";
-const JSONBIN_URL = PROXY + encodeURIComponent(JSONBIN_BASE);
-
-// ── Lire tous les scores ──
-async function fetchScores() {
-  const res = await fetch(PROXY + encodeURIComponent(JSONBIN_BASE + "/latest"), {
-    headers: { "X-Master-Key": JSONBIN_KEY }
-  });
-  const data = await res.json();
-  return data.record.scores || [];
-}
+// ── CONFIG SUPABASE ──
+const SUPA_URL = "https://lyfgnxafegacnztwxeiu.supabase.co";
+const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5ZmdueGFmZWdhY256dHd4ZWl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MTUzMjUsImV4cCI6MjA5MzM5MTMyNX0.7gDI12aIPKNSiSSyniLCE0gR1Nd5Q83q1d48isHgqRQ";
+const SUPA_HEADERS = {
+  "apikey": SUPA_KEY,
+  "Authorization": "Bearer " + SUPA_KEY,
+  "Content-Type": "application/json"
+};
 
 // ── Sauvegarder score en ligne ──
-async function saveScore(name, score, world) {
+async function saveScore(name, scoreVal, world) {
   try {
-    const scores = await fetchScores();
-    const idx = scores.findIndex(s => s.name === name.toUpperCase());
-    const entry = { name: name.toUpperCase(), score, world, date: new Date().toLocaleDateString('fr-FR') };
-    if(idx >= 0) {
-      if(score > scores[idx].score) scores[idx] = entry;
-    } else {
-      scores.push(entry);
-    }
-    // Garder top 100
-    scores.sort((a,b) => b.score - a.score);
-    const top100 = scores.slice(0, 100);
-    await fetch(JSONBIN_URL, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", "X-Master-Key": JSONBIN_KEY },
-      body: JSON.stringify({ scores: top100 })
+    const uname = name.toUpperCase();
+    // Vérifie si le joueur existe déjà
+    const checkRes = await fetch(SUPA_URL + "/rest/v1/scores?name=eq." + encodeURIComponent(uname) + "&select=id,score", {
+      headers: SUPA_HEADERS
     });
+    const existing = await checkRes.json();
+
+    if(existing && existing.length > 0) {
+      // Met à jour seulement si meilleur score
+      if(scoreVal > existing[0].score) {
+        await fetch(SUPA_URL + "/rest/v1/scores?id=eq." + existing[0].id, {
+          method: "PATCH",
+          headers: SUPA_HEADERS,
+          body: JSON.stringify({ score: scoreVal, world, date: new Date().toLocaleDateString("fr-FR") })
+        });
+      }
+    } else {
+      // Nouveau joueur
+      await fetch(SUPA_URL + "/rest/v1/scores", {
+        method: "POST",
+        headers: { ...SUPA_HEADERS, "Prefer": "return=minimal" },
+        body: JSON.stringify({ name: uname, score: scoreVal, world, date: new Date().toLocaleDateString("fr-FR") })
+      });
+    }
   } catch(e) { console.log("SaveScore error:", e); }
 }
 
@@ -1151,16 +1152,21 @@ async function saveScore(name, score, world) {
 async function loadLeaderboard() {
   lbList.innerHTML = '<div id="lb-loading">CHARGEMENT...</div>';
   try {
-    const scores = await fetchScores();
+    const res = await fetch(SUPA_URL + "/rest/v1/scores?select=*&order=score.desc&limit=50", {
+      headers: SUPA_HEADERS
+    });
+    const scores = await res.json();
+
     if(!scores || scores.length === 0) {
-      lbList.innerHTML = '<div id="lb-loading" style="color:rgba(255,255,255,0.2)">AUCUN SCORE ENCORE<br>SOIS LE PREMIER !</div>';
+      lbList.innerHTML = '<div id="lb-loading" style="color:rgba(255,255,255,0.2)">AUCUN SCORE ENCORE<br>SOIS LE PREMIER ! 🔥</div>';
       return;
     }
-    scores.sort((a,b) => b.score - a.score);
-    const top = scores.slice(0, 15);
+
     const myName = playerName.toUpperCase();
     const worldEmojis = {1:"🟡",2:"🟠",3:"🔴",4:"🌋",5:"☠️"};
     const medals = ["🥇","🥈","🥉"];
+    const top = scores.slice(0, 15);
+
     lbList.innerHTML = top.map((e, i) => {
       const isMe = e.name === myName;
       const cls = isMe ? "lb-me" : i===0 ? "lb-top1" : i===1 ? "lb-top2" : i===2 ? "lb-top3" : "";
@@ -1172,20 +1178,22 @@ async function loadLeaderboard() {
         <div class="lb-world">${worldBadge} Monde ${e.world||1}</div>
         <div class="lb-score">${e.score.toLocaleString()}</div>
       </div>`;
-    }).join('');
+    }).join("");
+
     // Afficher ma position si hors top 15
     const myIdx = scores.findIndex(s => s.name === myName);
     if(myIdx >= 15) {
       const me = scores[myIdx];
       lbList.innerHTML += `<div style="text-align:center;color:rgba(255,255,255,0.2);font-size:11px;margin:8px 0">...</div>
       <div class="lb-row lb-me">
-        <div class="lb-rank">${myIdx+1}</div>
+        <div class="lb-rank">#${myIdx+1}</div>
         <div class="lb-name">${me.name} (TOI)</div>
         <div class="lb-world">${worldEmojis[me.world]||"🟡"} Monde ${me.world||1}</div>
         <div class="lb-score">${me.score.toLocaleString()}</div>
       </div>`;
     }
   } catch(e) {
+    console.log("Leaderboard error:", e);
     lbList.innerHTML = '<div id="lb-loading" style="color:#FF3355">ERREUR DE CONNEXION 😢</div>';
   }
 }
